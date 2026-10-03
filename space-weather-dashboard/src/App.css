@@ -1,0 +1,3532 @@
+
+/* ============================================================
+   HELIO — GLOBAL LAYOUT / OVERFLOW FIX
+   ============================================================ */
+
+html,
+body,
+#root {
+  width: 100%;
+  max-width: 100%;
+  min-width: 320px;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+img,
+svg,
+canvas,
+video {
+  max-width: 100%;
+}
+
+button,
+a,
+input,
+textarea,
+select {
+  max-width: 100%;
+}
+
+.app-shell,
+.helio-app,
+.main-content {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.app-shell {
+  overflow-x: clip;
+}
+
+.main-content {
+  overflow-x: clip;
+}
+
+.hero-section,
+.hero-visual,
+.index-section,
+.metrics-section,
+.activity-layout,
+.earth-section,
+.sources-section,
+.footer {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.hero-section > *,
+.activity-layout > *,
+.earth-grid > *,
+.metrics-grid > * {
+  min-width: 0;
+}
+
+/* ============================================================
+   HELIO — SPACE WEATHER OBSERVATORY
+   FULL PREMIUM NEUMORPHIC UI
+   ============================================================ */
+
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap");
+
+/* ============================================================
+   01. DESIGN TOKENS
+   ============================================================ */
+
+:root {
+  --bg: #edf2f8;
+  --bg-light: #f4f7fb;
+  --surface: #edf2f8;
+  --surface-light: #f7f9fc;
+  --white: #ffffff;
+
+  --navy: #152542;
+  --navy-dark: #10203d;
+  --navy-card: #1c2d50;
+
+  --text: #172744;
+  --text-secondary: #637797;
+  --text-muted: #8999b1;
+  --text-light: #a4b0c1;
+
+  --blue: #669cf3;
+  --blue-dark: #3d78df;
+  --blue-soft: #e5efff;
+
+  --orange: #f5a52d;
+  --orange-light: #ffbd58;
+  --orange-soft: #fff0d3;
+
+  --purple: #886bea;
+  --purple-light: #a18bf3;
+  --purple-soft: #eeeaff;
+
+  --cyan: #55aaf0;
+  --cyan-soft: #e4f1ff;
+
+  --green: #27b77d;
+  --green-soft: #e4f7ef;
+
+  --red: #ed6868;
+  --red-soft: #fff0f0;
+
+  /* Neumorphism */
+  --shadow-dark:
+    18px 20px 42px rgba(60, 78, 108, 0.12);
+
+  --shadow-dark-small:
+    9px 10px 24px rgba(60, 78, 108, 0.10);
+
+  --shadow-light:
+    -18px -18px 40px rgba(255, 255, 255, 0.96);
+
+  --shadow-light-small:
+    -9px -9px 22px rgba(255, 255, 255, 0.96);
+
+  --shadow-neumorphic:
+    var(--shadow-dark),
+    var(--shadow-light);
+
+  --shadow-neumorphic-small:
+    var(--shadow-dark-small),
+    var(--shadow-light-small);
+
+  /* Glass */
+  --glass:
+    rgba(255, 255, 255, 0.72);
+
+  --glass-strong:
+    rgba(255, 255, 255, 0.84);
+
+  --glass-border:
+    rgba(255, 255, 255, 0.92);
+
+  /* Radius */
+  --radius-xl: 38px;
+  --radius-lg: 32px;
+  --radius-md: 24px;
+  --radius-sm: 17px;
+}
+
+/* ============================================================
+   02. RESET
+   ============================================================ */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+
+  min-width: 320px;
+
+  background:
+    radial-gradient(
+      circle at 80% 10%,
+      rgba(255, 255, 255, 0.95),
+      transparent 27%
+    ),
+    radial-gradient(
+      circle at 12% 42%,
+      rgba(213, 226, 245, 0.48),
+      transparent 32%
+    ),
+    linear-gradient(
+      135deg,
+      #eaf0f7 0%,
+      #f4f7fb 48%,
+      #eaf0f7 100%
+    );
+
+  color: var(--text);
+
+  font-family:
+    "DM Sans",
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  border: 0;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* ============================================================
+   03. APP SHELL
+   ============================================================ */
+
+.app-shell {
+  position: relative;
+
+  min-height: 100vh;
+
+  background:
+    radial-gradient(
+      circle at 75% 8%,
+      rgba(255, 255, 255, 0.65),
+      transparent 25%
+    );
+}
+
+/* ============================================================
+   04. SIDEBAR
+   ============================================================ */
+
+.sidebar {
+  position: fixed;
+
+  top: 22px;
+  left: 22px;
+  bottom: 22px;
+
+  width: 320px;
+
+  padding:
+    42px 28px 25px;
+
+  border-radius: 34px;
+
+  background:
+    rgba(247, 249, 252, 0.80);
+
+  border:
+    1px solid rgba(255, 255, 255, 0.92);
+
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+
+  box-shadow:
+    18px 22px 55px rgba(61, 80, 111, 0.10),
+    -10px -10px 30px rgba(255, 255, 255, 0.90);
+
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ============================================================
+   05. BRAND
+   ============================================================ */
+
+.brand {
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+
+  padding:
+    3px 8px 38px;
+}
+
+.brand-mark {
+  width: 56px;
+  height: 56px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #fbfdff,
+      #dce7f7
+    );
+
+  color: var(--blue);
+
+  font-family:
+    "Space Grotesk",
+    sans-serif;
+
+  font-size: 23px;
+  font-weight: 700;
+
+  box-shadow:
+    8px 9px 21px rgba(63, 83, 114, 0.12),
+    -7px -7px 18px rgba(255, 255, 255, 0.96);
+}
+
+.brand-name {
+  font-family:
+    "Space Grotesk",
+    sans-serif;
+
+  font-size: 27px;
+  font-weight: 600;
+
+  letter-spacing: -0.045em;
+
+  color: var(--navy);
+}
+
+.brand-subtitle {
+  margin-top: 4px;
+
+  font-size: 9px;
+  font-weight: 700;
+
+  letter-spacing: 0.28em;
+
+  color: #8797b0;
+}
+
+/* ============================================================
+   06. SIDEBAR NAV
+   ============================================================ */
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 3px;
+  padding-bottom: 190px;
+  scrollbar-width: none;
+}
+
+.sidebar-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.nav-item {
+  position: relative;
+
+  min-height: 58px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 16px;
+
+  padding:
+    0 20px;
+
+  border-radius: 20px;
+
+  color: #71819d;
+
+  font-size: 15px;
+  font-weight: 500;
+
+  transition:
+    0.25s ease;
+}
+
+.nav-item:hover {
+  color: #4b6388;
+
+  background:
+    rgba(235, 242, 252, 0.72);
+
+  transform:
+    translateX(2px);
+}
+
+.nav-item.active {
+  color: #2866cc;
+
+  background:
+    linear-gradient(
+      135deg,
+      #dceaff,
+      #d0e1fb
+    );
+
+  box-shadow:
+    8px 10px 22px rgba(66, 98, 144, 0.10),
+    -6px -6px 15px rgba(255, 255, 255, 0.82);
+}
+
+.nav-icon {
+  width: 22px;
+
+  display: flex;
+  justify-content: center;
+
+  font-size: 18px;
+
+  color: #7186a7;
+}
+
+.nav-item.active .nav-icon {
+  color: #4282e9;
+}
+
+/* ============================================================
+   07. SIDEBAR LIVE DATA
+   ============================================================ */
+
+.sidebar-bottom {
+  position: absolute;
+
+  left: 28px;
+  right: 28px;
+  bottom: 24px;
+  z-index: 5;
+  pointer-events: auto;
+}
+
+.data-source-box {
+  margin-bottom: 17px;
+
+  padding:
+    21px;
+
+  border-radius: 25px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.92),
+      rgba(241, 246, 252, 0.74)
+    );
+
+  box-shadow:
+    9px 10px 25px rgba(63, 83, 115, 0.08),
+    -8px -8px 20px rgba(255, 255, 255, 0.90);
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.source-label {
+  margin-bottom: 10px;
+
+  font-size: 8px;
+  font-weight: 700;
+
+  letter-spacing: 0.20em;
+
+  color: #8b9ab1;
+}
+
+.source-name {
+  margin-top: 7px;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  color: #516582;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.connection-status {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  padding:
+    0 8px;
+
+  font-size: 11px;
+
+  color: #8b9ab0;
+}
+
+.connection-status.online,
+.connection-status.offline {
+  color: #27ae7b;
+}
+
+.connection-status.partial {
+  color: #dc9826;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+
+  flex: 0 0 7px;
+
+  border-radius: 50%;
+
+  background: #99a8bc;
+}
+
+.connection-status.online .status-dot,
+.connection-status.offline .status-dot {
+  background: #27bb7e;
+
+  box-shadow:
+    0 0 0 4px rgba(39, 187, 126, 0.10);
+}
+
+.connection-status.partial .status-dot {
+  background: #f1a62d;
+}
+
+/* ============================================================
+   08. MAIN CONTENT
+   ============================================================ */
+
+.main-content {
+  width: calc(100% - 365px);
+  max-width: calc(100% - 365px);
+  margin-left: 365px;
+  padding: 0 48px 65px;
+  min-width: 0;
+  overflow-x: clip;
+}
+
+/* ============================================================
+   09. TOP BAR
+   ============================================================ */
+
+.topbar {
+  height: 94px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-bottom:
+    1px solid rgba(100, 123, 158, 0.08);
+  min-width: 0;
+  max-width: 100%;
+}
+
+.topbar-left,
+.topbar-right {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.topbar-left {
+  gap: 10px;
+}
+
+.topbar-right {
+  gap: 12px;
+}
+
+.breadcrumb {
+  font-size: 9px;
+  font-weight: 700;
+
+  letter-spacing: 0.22em;
+
+  color: #8d9bb1;
+}
+
+.breadcrumb.current {
+  color: #536886;
+}
+
+.topbar-separator {
+  color: #c3ccda;
+}
+
+.live-indicator {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  padding:
+    12px 19px;
+
+  border-radius: 20px;
+
+  background:
+    rgba(255, 255, 255, 0.74);
+
+  box-shadow:
+    8px 9px 22px rgba(63, 83, 113, 0.07),
+    -7px -7px 18px rgba(255, 255, 255, 0.80);
+
+  font-size: 10px;
+  font-weight: 700;
+
+  letter-spacing: 0.12em;
+}
+
+.live-indicator.online,
+.live-indicator.offline {
+  color: #27ad79;
+}
+
+.live-indicator.partial {
+  color: #db9726;
+}
+
+.refresh-button {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  padding:
+    12px 17px;
+
+  border-radius: 17px;
+
+  background:
+    #edf2f8;
+
+  color: #536785;
+
+  cursor: pointer;
+
+  box-shadow:
+    8px 9px 20px rgba(62, 81, 112, 0.08),
+    -8px -8px 18px rgba(255, 255, 255, 0.92);
+
+  transition:
+    transform 0.2s ease;
+}
+
+.refresh-button:hover:not(:disabled) {
+  transform:
+    translateY(-2px);
+}
+
+.refresh-button:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+
+.refresh-icon {
+  font-size: 17px;
+}
+
+.spinning {
+  animation:
+    spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ============================================================
+   10. API WARNING
+   ============================================================ */
+
+.api-warning {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  margin-top: 20px;
+
+  padding:
+    13px 17px;
+
+  border-radius: 18px;
+
+  background:
+    rgba(255, 246, 227, 0.86);
+
+  box-shadow:
+    7px 8px 18px rgba(120, 96, 50, 0.05),
+    -7px -7px 18px rgba(255, 255, 255, 0.85);
+}
+
+.api-warning-icon {
+  width: 27px;
+  height: 27px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+
+  background: #f3a52b;
+
+  color: white;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.api-warning div:last-child {
+  display: flex;
+  flex-direction: column;
+
+  gap: 2px;
+}
+
+.api-warning strong {
+  font-size: 11px;
+}
+
+.api-warning span {
+  font-size: 9px;
+
+  color: #9d7731;
+}
+
+/* ============================================================
+   11. HERO
+   ============================================================ */
+
+.hero-section {
+  position: relative;
+
+  min-height: 610px;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(440px, 0.95fr)
+    minmax(560px, 1.05fr);
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding:
+    35px 0 20px;
+
+  overflow: visible;
+}
+
+.hero-copy {
+  position: relative;
+
+  z-index: 5;
+
+  padding-left: 18px;
+}
+
+.eyebrow {
+  font-size: 10px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.38em;
+
+  color: #7185a7;
+}
+
+.hero-copy h1 {
+  margin:
+    30px 0 22px;
+
+  max-width: 650px;
+
+  font-family:
+    "Space Grotesk",
+    sans-serif;
+
+  font-size:
+    clamp(64px, 6vw, 100px);
+
+  font-weight: 600;
+
+  line-height: 0.89;
+
+  letter-spacing: -0.065em;
+
+  color: #10203d;
+}
+
+.hero-copy h1 span {
+  color: #70a3f7;
+}
+
+.hero-copy p {
+  max-width: 610px;
+
+  margin: 0;
+
+  font-size: 16px;
+
+  line-height: 1.8;
+
+  color: #71819d;
+}
+
+.hero-meta {
+  display: flex;
+
+  gap: 40px;
+
+  margin-top: 30px;
+}
+
+.meta-item {
+  display: flex;
+  flex-direction: column;
+
+  gap: 5px;
+}
+
+.meta-label {
+  font-size: 8px;
+  font-weight: 700;
+
+  letter-spacing: 0.17em;
+
+  color: #9aa8bc;
+}
+
+.meta-value {
+  font-size: 11px;
+  font-weight: 600;
+
+  color: #536785;
+}
+
+/* ============================================================
+   12. HERO VISUAL
+   ============================================================ */
+
+.hero-visual {
+  position: relative;
+
+  height: 560px;
+
+  overflow: visible;
+}
+
+/* ============================================================
+   13. ORBITS
+   ============================================================ */
+
+.orbit {
+  position: absolute;
+
+  left: 51%;
+  top: 50%;
+
+  border:
+    1px solid rgba(91, 132, 190, 0.18);
+
+  border-radius: 50%;
+
+  transform:
+    translate(-50%, -50%);
+}
+
+.orbit-one {
+  width: 510px;
+  height: 280px;
+
+  transform:
+    translate(-50%, -50%)
+    rotate(-15deg);
+}
+
+.orbit-two {
+  width: 610px;
+  height: 350px;
+
+  transform:
+    translate(-50%, -50%)
+    rotate(19deg);
+}
+
+/* ============================================================
+   14. SUN
+   ============================================================ */
+
+.sun-glow {
+  position: absolute;
+
+  left: 52%;
+  top: 50%;
+
+  width: 440px;
+  height: 440px;
+
+  border-radius: 50%;
+
+  transform:
+    translate(-50%, -50%);
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(255, 182, 55, 0.27),
+      rgba(255, 176, 40, 0.10) 42%,
+      transparent 70%
+    );
+
+  filter: blur(12px);
+}
+
+.sun {
+  position: absolute;
+
+  left: 52%;
+  top: 50%;
+
+  width: 300px;
+  height: 300px;
+
+  border-radius: 50%;
+
+  transform:
+    translate(-50%, -50%);
+
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 38% 32%,
+      #fff8d9 0%,
+      #ffd95e 12%,
+      #ffbd31 30%,
+      #fa9919 52%,
+      #ed7710 75%,
+      #d95b07 100%
+    );
+
+  box-shadow:
+    0 0 45px rgba(248, 163, 40, 0.34),
+    0 0 100px rgba(248, 163, 40, 0.18),
+    inset -25px -20px 50px rgba(177, 69, 4, 0.18);
+}
+
+.sun-surface {
+  position: absolute;
+
+  inset: 0;
+
+  background:
+    repeating-radial-gradient(
+      circle at center,
+      transparent 0 17px,
+      rgba(255, 255, 255, 0.13) 18px 21px,
+      transparent 22px 34px
+    );
+
+  opacity: 0.85;
+}
+
+.sun-flare {
+  position: absolute;
+
+  border-radius: 50%;
+
+  background:
+    rgba(255, 247, 210, 0.60);
+
+  filter: blur(2px);
+}
+
+.flare-one {
+  width: 38px;
+  height: 17px;
+
+  top: 55px;
+  left: 80px;
+
+  transform:
+    rotate(-20deg);
+}
+
+.flare-two {
+  width: 52px;
+  height: 19px;
+
+  bottom: 70px;
+  right: 40px;
+
+  transform:
+    rotate(22deg);
+}
+
+.flare-three {
+  width: 25px;
+  height: 12px;
+
+  top: 125px;
+  right: 42px;
+}
+
+/* ============================================================
+   15. FLOATING CARDS
+   ============================================================ */
+
+.floating-card {
+  position: absolute;
+
+  z-index: 20;
+
+  width: 235px;
+
+  padding:
+    20px 22px;
+
+  border-radius: 25px;
+
+  background:
+    rgba(255, 255, 255, 0.78);
+
+  border:
+    1px solid rgba(255, 255, 255, 0.92);
+
+  backdrop-filter:
+    blur(22px);
+
+  -webkit-backdrop-filter:
+    blur(22px);
+
+  box-shadow:
+    0 22px 50px rgba(64, 84, 117, 0.13),
+    inset 0 1px 1px rgba(255, 255, 255, 0.90);
+
+  animation:
+    floatCard 5s ease-in-out infinite;
+}
+
+.wind-card {
+  top: 72px;
+  right: 1%;
+}
+
+.storm-card {
+  right: 4%;
+  bottom: 80px;
+
+  animation-delay:
+    -2.5s;
+}
+
+@keyframes floatCard {
+  0%,
+  100% {
+    transform:
+      translateY(0);
+  }
+
+  50% {
+    transform:
+      translateY(-8px);
+  }
+}
+
+.floating-card-label {
+  font-size: 9px;
+
+  font-weight: 600;
+
+  color: #91a0b7;
+}
+
+.floating-card-value {
+  display: inline-block;
+
+  margin-top: 8px;
+
+  font-family:
+    "Space Grotesk",
+    sans-serif;
+
+  font-size: 27px;
+
+  font-weight: 600;
+
+  color: #182744;
+}
+
+.floating-card-unit {
+  display: inline-block;
+
+  margin-left: 6px;
+
+  font-size: 9px;
+
+  color: #8190a8;
+}
+
+.floating-card-line {
+  height: 1px;
+
+  margin:
+    11px 0;
+
+  background:
+    rgba(96, 119, 153, 0.10);
+}
+
+.floating-card-status {
+  font-size: 7px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.13em;
+
+  color: #8a99b0;
+}
+
+/* ============================================================
+   16. SPACE WEATHER INDEX
+   ============================================================ */
+
+.index-section {
+  margin-top: 10px;
+}
+
+.index-card {
+  position: relative;
+
+  min-height: 225px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 30px;
+
+  padding:
+    32px 40px;
+
+  border-radius: 32px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #1a2b4c,
+      #1d3055
+    );
+
+  color: white;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 25px 60px rgba(33, 53, 87, 0.20);
+}
+
+.index-card::before {
+  content: "";
+
+  position: absolute;
+
+  width: 340px;
+  height: 340px;
+
+  right: -120px;
+  top: -150px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(112, 165, 255, 0.17),
+      transparent 68%
+    );
+}
+
+.index-info {
+  position: relative;
+
+  z-index: 2;
+
+  max-width: 620px;
+}
+
+.index-info h2 {
+  margin:
+    8px 0 9px;
+
+  font-family:
+    "Space Grotesk",
+    sans-serif;
+
+  font-size: 26px;
+
+  color: white;
+}
+
+.index-info p {
+  max-width: 580px;
+
+  margin: 0;
+
+  color: #9caecc;
+
+  font-size: 11px;
+
+  line-height: 1.65;
+}
+
+.index-legend {
+  display: flex;
+
+  gap: 18px;
+
+  margin-top: 18px;
+
+  font-size: 7px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.12em;
+
+  color: #7589ac;
+}
+
+.index-meter {
+  position: relative;
+
+  z-index: 2;
+
+  width: 175px;
+  height: 175px;
+
+  flex: 0 0 175px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      #192a4a 0 56%,
+      transparent 57%
+    ),
+    conic-gradient(
+      #6ca5ff 0deg 65deg,
+      rgba(255,255,255,0.08) 65deg 360deg
+    );
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.04);
+}
+
+.index-number {
+  font-family:
+    "Space Grotesk",
+    sans-serif;
+
+  font-size: 48px;
+
+  font-weight: 500;
+
+  line-height: 1;
+
+  color: white;
+}
+
+.index-unit {
+  margin-top: 3px;
+
+  font-size: 9px;
+
+  color: #8599bc;
+}
+
+.index-label {
+  margin-top: 12px;
+
+  padding:
+    8px 20px;
+
+  border-radius: 30px;
+
+  background:
+    #ffda7c;
+
+  color: #76530e;
+
+  font-size: 8px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.10em;
+}
+
+/* ============================================================
+   17. COMMON SECTIONS
+   ============================================================ */
+
+.metrics-section,
+.chart-section,
+.earth-section,
+.events-section,
+.sources-section {
+  margin-top: 65px;
+}
+
+.section-heading {
+  display: flex;
+
+  align-items: flex-end;
+
+  justify-content: space-between;
+
+  gap: 20px;
+
+  margin-bottom: 28px;
+}
+
+.section-eyebrow {
+  display: block;
+
+  margin-bottom: 10px;
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.30em;
+
+  color: #8091ad;
+}
+
+.section-heading h2 {
+  margin: 0;
+
+  font-family:
+    "Space Grotesk",
+    sans-serif;
+
+  font-size: 38px;
+
+  font-weight: 600;
+
+  line-height: 1;
+
+  letter-spacing: -0.045em;
+
+  color: var(--navy);
+}
+
+.section-period {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  min-width: 138px;
+  height: 48px;
+
+  padding:
+    0 20px;
+
+  border-radius: 30px;
+
+  background:
+    var(--surface);
+
+  color: #7788a3;
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.16em;
+
+  box-shadow:
+    var(--shadow-neumorphic-small);
+}
+
+/* ============================================================
+   18. LIVE METRICS — COMPACT NEUMORPHISM
+   ============================================================ */
+
+.metrics-section {
+  width: 100%;
+  margin-top: 50px;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  width: 100%;
+}
+
+.metric-card {
+  position: relative;
+  min-height: 205px;
+  height: 205px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  padding: 23px 26px 18px;
+
+  overflow: hidden;
+  border: none;
+  border-radius: 28px;
+  background: #edf2f8;
+
+  box-shadow:
+    11px 12px 27px rgba(60, 78, 108, 0.10),
+    -10px -10px 24px rgba(255, 255, 255, 0.94);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.metric-card:hover {
+  transform: translateY(-3px);
+
+  box-shadow:
+    15px 17px 32px rgba(60, 78, 108, 0.13),
+    -12px -12px 28px rgba(255, 255, 255, 0.98);
+}
+
+.metric-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 16px;
+  bottom: 16px;
+  width: 6px;
+  border-radius: 0 7px 7px 0;
+  background: #6b9cf1;
+}
+
+.metric-card.orange::before {
+  background: linear-gradient(180deg, #ffb53d, #f19a20);
+  box-shadow: 3px 0 10px rgba(245, 165, 42, 0.18);
+}
+
+.metric-card.purple::before {
+  background: linear-gradient(180deg, #9a77f3, #7d5ee0);
+  box-shadow: 3px 0 10px rgba(128, 97, 229, 0.18);
+}
+
+.metric-card.blue::before {
+  background: linear-gradient(180deg, #69a7fa, #4b8de9);
+  box-shadow: 3px 0 10px rgba(77, 142, 235, 0.18);
+}
+
+.metric-card.cyan::before {
+  background: linear-gradient(180deg, #63b7fa, #499ce9);
+  box-shadow: 3px 0 10px rgba(74, 156, 232, 0.18);
+}
+
+.metric-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 12px;
+}
+
+.metric-label {
+  font-size: 17px;
+  line-height: 1.2;
+  font-weight: 500;
+  color: #617797;
+  white-space: nowrap;
+}
+
+.metric-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 84px;
+  height: 31px;
+  padding: 0 12px;
+  border-radius: 20px;
+
+  background: #e7edf5;
+  color: #7890b0;
+
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  white-space: nowrap;
+
+  box-shadow:
+    inset 2px 2px 5px rgba(78, 96, 125, 0.05),
+    inset -2px -2px 5px rgba(255, 255, 255, 0.70);
+}
+
+.metric-status.success {
+  background: #e5efff;
+  color: #4b87eb;
+  box-shadow:
+    4px 4px 10px rgba(67, 101, 145, 0.06),
+    -4px -4px 10px rgba(255, 255, 255, 0.75);
+}
+
+.metric-status.error {
+  background: #fff0f0;
+  color: #ed6868;
+  box-shadow:
+    4px 4px 10px rgba(125, 79, 79, 0.04),
+    -4px -4px 10px rgba(255, 255, 255, 0.85);
+}
+
+.metric-status.loading {
+  background: #e7edf5;
+  color: #8999b0;
+}
+
+.metric-main {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  margin-top: 23px;
+}
+
+.metric-value {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 52px;
+  font-weight: 500;
+  line-height: 0.9;
+  letter-spacing: -0.06em;
+  color: #142542;
+  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.50);
+}
+
+.metric-unit {
+  font-size: 13px;
+  font-weight: 500;
+  color: #8192ad;
+}
+
+.metric-description {
+  margin-top: 11px;
+  font-size: 12px;
+  line-height: 1.3;
+  color: #8b9bb4;
+}
+
+.metric-line {
+  display: none;
+}
+
+/* ============================================================
+   19. METRIC ICON — COMPACT
+   ============================================================ */
+
+.metric-icon {
+  width: 52px;
+  height: 52px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 8px;
+  border-radius: 50%;
+  background: #edf2f8;
+
+  box-shadow:
+    7px 7px 16px rgba(62, 82, 113, 0.10),
+    -7px -7px 16px rgba(255, 255, 255, 0.92);
+
+  color: #6098ef;
+}
+
+.metric-icon svg {
+  width: 27px;
+  height: 27px;
+}
+
+/* ============================================================
+   20. ACTIVITY CHART — CLEAN FIX
+   ============================================================ */
+
+.chart-card {
+  overflow: hidden;
+
+  border-radius: 34px;
+
+  background: #edf2f8;
+
+  box-shadow:
+    18px 20px 42px rgba(60, 78, 108, 0.10),
+    -18px -18px 40px rgba(255, 255, 255, 0.95);
+}
+
+
+/* Main chart container */
+
+.native-chart {
+  display: flex;
+
+  min-height: 390px;
+
+  padding: 30px 32px 30px;
+}
+
+
+/* ============================================================
+   Y AXIS
+   ============================================================ */
+
+.chart-y-axis {
+  width: 32px;
+
+  height: 320px;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: space-between;
+
+  padding: 4px 0 40px;
+
+  flex-shrink: 0;
+
+  font-size: 10px;
+
+  color: #9aa8bc;
+}
+
+
+/* ============================================================
+   CHART AREA
+   ============================================================ */
+
+.chart-area {
+  position: relative;
+
+  flex: 1;
+
+  height: 320px;
+
+  min-width: 0;
+
+  overflow: visible;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+
+/* ============================================================
+   GRID LINES
+   ============================================================ */
+
+.chart-grid-line {
+  height: 25%;
+
+  border-top:
+    1px dashed rgba(98, 121, 156, 0.12);
+
+  pointer-events: none;
+}
+
+
+/* ============================================================
+   BAR CHART
+   ============================================================ */
+
+.bar-chart {
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+
+  display: flex;
+
+  align-items: stretch;
+
+  justify-content: space-between;
+
+  padding:
+    0 8px 42px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+
+/* ============================================================
+   EACH DAY
+   ============================================================ */
+
+.chart-column {
+  position: relative;
+
+  height: 100%;
+
+  flex: 1;
+
+  max-width: 100px;
+
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: flex-end;
+
+  align-items: center;
+}
+
+
+/* ============================================================
+   BAR GROUP
+   ============================================================ */
+
+.chart-bars {
+  width: 100%;
+
+  height: calc(100% - 38px);
+
+  display: flex;
+
+  align-items: flex-end;
+
+  justify-content: center;
+
+  gap: 5px;
+
+  padding-bottom: 3px;
+}
+
+
+/* ============================================================
+   INDIVIDUAL BAR
+   ============================================================ */
+
+.chart-bar {
+  width: 10px;
+
+  min-height: 5px;
+
+  flex: 0 0 10px;
+
+  border-radius:
+    10px 10px 3px 3px;
+
+  transition:
+    height 0.5s ease,
+    transform 0.2s ease;
+}
+
+.chart-bar:hover {
+  transform:
+    translateY(-4px);
+}
+
+
+/* Solar flares */
+
+.flare-bar {
+  background:
+    linear-gradient(
+      to top,
+      #f49b20,
+      #ffbf56
+    );
+
+  box-shadow:
+    0 3px 8px rgba(244, 155, 32, 0.18);
+}
+
+
+/* CME */
+
+.cme-bar {
+  background:
+    linear-gradient(
+      to top,
+      #5794f2,
+      #7eafff
+    );
+
+  box-shadow:
+    0 3px 8px rgba(87, 148, 242, 0.18);
+}
+
+
+/* Geomagnetic storm */
+
+.storm-bar {
+  background:
+    linear-gradient(
+      to top,
+      #8166e8,
+      #a18df3
+    );
+
+  box-shadow:
+    0 3px 8px rgba(129, 102, 232, 0.18);
+}
+
+
+/* ============================================================
+   DATE LABEL
+   ============================================================ */
+
+.chart-date {
+  position: absolute;
+
+  left: 50%;
+
+  bottom: 7px;
+
+  transform:
+    translateX(-50%);
+
+  color: #8798b1;
+
+  font-size: 9px;
+
+  font-weight: 500;
+
+  white-space: nowrap;
+
+  line-height: 1;
+
+  pointer-events: none;
+}
+
+
+/* ============================================================
+   LEGEND
+   ============================================================ */
+
+.chart-legend {
+  display: flex;
+
+  align-items: center;
+
+  gap: 20px;
+
+  padding:
+    0 32px 25px;
+
+  color: #7787a2;
+
+  font-size: 10px;
+}
+
+.chart-legend span {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+}
+
+.legend-dot {
+  width: 9px;
+  height: 9px;
+
+  flex: 0 0 9px;
+
+  border-radius: 50%;
+}
+
+.legend-dot.flare {
+  background: #f6a42c;
+}
+
+.legend-dot.cme {
+  background: #6199f4;
+}
+
+.legend-dot.storm {
+  background: #876ceb;
+}
+
+
+/* ============================================================
+   MOBILE CHART
+   ============================================================ */
+
+@media (max-width: 650px) {
+
+  .native-chart {
+    min-height: 300px;
+
+    padding:
+      20px 10px 15px;
+  }
+
+  .chart-y-axis {
+    width: 25px;
+
+    height: 245px;
+
+    padding-bottom: 35px;
+
+    font-size: 8px;
+  }
+
+  .chart-area {
+    height: 245px;
+  }
+
+  .bar-chart {
+    padding:
+      0 3px 38px;
+  }
+
+  .chart-bars {
+    height:
+      calc(100% - 34px);
+
+    gap: 2px;
+  }
+
+  .chart-bar {
+    width: 6px;
+
+    flex-basis: 6px;
+
+    min-height: 4px;
+  }
+
+  .chart-date {
+    bottom: 5px;
+
+    font-size: 7px;
+  }
+
+  .chart-legend {
+    flex-wrap: wrap;
+
+    gap: 12px;
+
+    padding:
+      0 15px 18px;
+
+    font-size: 9px;
+  }
+}
+/* ============================================================
+   21. EARTH IMPACT
+   ============================================================ */
+
+.earth-section {
+  margin-top: 65px;
+}
+
+.earth-grid {
+  display: grid;
+
+  grid-template-columns:
+    0.9fr 1.1fr;
+
+  gap: 25px;
+
+  padding:
+    34px;
+
+  border-radius:
+    34px;
+
+  background:
+    #edf2f8;
+
+  box-shadow:
+    18px 20px 42px rgba(60, 78, 108, 0.10),
+    -18px -18px 40px rgba(255, 255, 255, 0.95);
+}
+
+.earth-visual-card {
+  position: relative;
+
+  min-height: 390px;
+
+  display: grid;
+
+  place-items: center;
+
+  border-radius:
+    28px;
+
+  background:
+    #edf2f8;
+
+  box-shadow:
+    inset 7px 7px 17px rgba(72, 92, 122, 0.06),
+    inset -7px -7px 17px rgba(255, 255, 255, 0.65);
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.earth-orbit {
+  position: absolute;
+
+  width: 330px;
+  height: 160px;
+
+  border:
+    1px solid rgba(77, 126, 185, 0.23);
+
+  border-radius: 50%;
+
+  transform:
+    rotate(-15deg);
+}
+
+.earth {
+  position: relative;
+
+  width: 180px;
+  height: 180px;
+
+  overflow: hidden;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle at 30% 27%,
+      #65bdf2,
+      #168dd0 48%,
+      #07548e 78%,
+      #102d50 100%
+    );
+
+  box-shadow:
+    0 25px 50px rgba(38, 78, 121, 0.22),
+    inset -25px -18px 35px rgba(5, 31, 59, 0.30);
+}
+
+.earth-land {
+  position: absolute;
+
+  background:
+    #43b56f;
+
+  opacity: 0.78;
+
+  filter: blur(1px);
+
+  border-radius:
+    45% 55% 50% 40%;
+}
+
+.land-one {
+  width: 70px;
+  height: 45px;
+
+  top: 32px;
+  left: 38px;
+}
+
+.land-two {
+  width: 53px;
+  height: 63px;
+
+  top: 78px;
+  right: 28px;
+}
+
+.land-three {
+  width: 38px;
+  height: 38px;
+
+  bottom: 25px;
+  left: 55px;
+}
+
+.earth-cloud {
+  position: absolute;
+
+  height: 9px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(255,255,255,0.42);
+
+  filter: blur(2px);
+}
+
+.cloud-one {
+  width: 80px;
+
+  top: 70px;
+  left: 72px;
+
+  transform:
+    rotate(-15deg);
+}
+
+.cloud-two {
+  width: 55px;
+
+  bottom: 55px;
+  left: 25px;
+
+  transform:
+    rotate(15deg);
+}
+
+.earth-label {
+  position: absolute;
+
+  bottom: 8px;
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.20em;
+
+  color: #8393aa;
+}
+
+/* ============================================================
+   22. IMPACT ITEMS
+   ============================================================ */
+
+.impact-list {
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+
+  gap: 13px;
+}
+
+.impact-item {
+  min-height: 78px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 15px;
+
+  padding:
+    13px 18px;
+
+  border-radius:
+    20px;
+
+  background:
+    #edf2f8;
+
+  box-shadow:
+    9px 10px 22px rgba(62, 82, 113, 0.07),
+    -9px -9px 22px rgba(255, 255, 255, 0.82);
+
+  transition:
+    transform 0.2s ease;
+}
+
+.impact-item:hover {
+  transform:
+    translateX(4px);
+}
+
+.impact-icon {
+  width: 42px;
+  height: 42px;
+
+  flex: 0 0 42px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+
+  background:
+    #edf2f8;
+
+  color: #6483b4;
+
+  box-shadow:
+    6px 6px 13px rgba(62, 82, 113, 0.08),
+    -6px -6px 13px rgba(255, 255, 255, 0.80);
+}
+
+.impact-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.impact-title {
+  font-size: 12px;
+
+  font-weight: 700;
+
+  color: #253653;
+}
+
+.impact-description {
+  margin-top: 4px;
+
+  font-size: 9px;
+
+  color: #96a4b9;
+}
+
+.impact-status {
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  font-size: 8px;
+
+  font-weight: 700;
+
+  color: #37b985;
+}
+
+.impact-status.watch {
+  color: #eda32a;
+}
+
+.impact-status.elevated {
+  color: #e66a6a;
+}
+
+.impact-status.monitor {
+  color: #8065df;
+}
+
+/* ============================================================
+   23. LATEST EVENTS
+   ============================================================ */
+
+.events-card {
+  overflow: hidden;
+
+  border-radius:
+    34px;
+
+  background:
+    #edf2f8;
+
+  box-shadow:
+    18px 20px 42px rgba(60, 78, 108, 0.10),
+    -18px -18px 40px rgba(255, 255, 255, 0.95);
+}
+
+.event-item {
+  min-height: 95px;
+
+  display: flex;
+
+  align-items: center;
+
+  padding:
+    18px 25px;
+
+  border-bottom:
+    1px solid rgba(91, 113, 147, 0.07);
+}
+
+.event-item:last-child {
+  border-bottom: none;
+}
+
+.event-item:hover {
+  background:
+    rgba(247,249,252,0.60);
+}
+
+.event-indicator {
+  width: 45px;
+  height: 45px;
+
+  flex: 0 0 45px;
+
+  margin-right: 17px;
+
+  border-radius: 50%;
+
+  background:
+    #edf2f8;
+
+  box-shadow:
+    6px 6px 13px rgba(62, 82, 113, 0.08),
+    -6px -6px 13px rgba(255, 255, 255, 0.80);
+}
+
+.event-indicator.normal {
+  background:
+    #fff1d7;
+}
+
+.event-indicator.warning {
+  background:
+    #fff1d7;
+}
+
+.event-indicator.danger {
+  background:
+    #ffe3e3;
+}
+
+.event-indicator.purple {
+  background:
+    #eeeaff;
+}
+
+.event-indicator.blue {
+  background:
+    #e4f0ff;
+}
+
+.event-content {
+  flex: 1;
+
+  min-width: 0;
+}
+
+.event-type {
+  font-size: 8px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.13em;
+
+  color: #98a6ba;
+}
+
+.event-title {
+  margin-top: 5px;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  color: #253653;
+}
+
+.event-meta {
+  margin-top: 3px;
+
+  font-size: 9px;
+
+  color: #97a4b8;
+}
+
+.event-date {
+  min-width: 100px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-end;
+
+  gap: 3px;
+
+  color: #637694;
+
+  font-size: 9px;
+
+  font-weight: 600;
+}
+
+.event-date small {
+  color: #a0acbd;
+
+  font-size: 8px;
+}
+
+/* ============================================================
+   24. EMPTY STATE
+   ============================================================ */
+
+.empty-state {
+  min-height: 220px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 9px;
+
+  color: #94a2b6;
+
+  text-align: center;
+}
+
+.empty-state strong {
+  color: #425575;
+
+  font-size: 13px;
+}
+
+.empty-state span {
+  max-width: 320px;
+
+  font-size: 10px;
+
+  line-height: 1.5;
+}
+
+.empty-icon {
+  width: 48px;
+  height: 48px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
+
+  background:
+    #edf2f8;
+
+  box-shadow:
+    7px 7px 16px rgba(62, 82, 113, 0.08),
+    -7px -7px 16px rgba(255, 255, 255, 0.85);
+
+  font-size: 20px;
+}
+
+.loading-orb {
+  width: 36px;
+  height: 36px;
+
+  border:
+    3px solid #dce4ef;
+
+  border-top-color:
+    #669cf3;
+
+  border-radius: 50%;
+
+  animation:
+    spin 0.8s linear infinite;
+}
+
+/* ============================================================
+   25. SOURCES
+   ============================================================ */
+
+.sources-card {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 30px;
+
+  padding:
+    30px 35px;
+
+  border-radius:
+    32px;
+
+  background:
+    #edf2f8;
+
+  box-shadow:
+    18px 20px 42px rgba(60, 78, 108, 0.10),
+    -18px -18px 40px rgba(255, 255, 255, 0.95);
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.sources-card h3 {
+  margin:
+    7px 0;
+
+  font-family:
+    "Space Grotesk",
+    sans-serif;
+
+  font-size: 20px;
+
+  color: #203250;
+}
+
+.sources-card p {
+  max-width: 620px;
+
+  margin: 0;
+
+  font-size: 10px;
+
+  line-height: 1.7;
+
+  color: #8c9ab0;
+}
+
+.source-badges {
+  display: flex;
+
+  gap: 10px;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.source-badge {
+  min-width: 80px;
+
+  padding:
+    13px 15px;
+
+  border-radius:
+    16px;
+
+  background:
+    #edf2f8;
+
+  text-align: center;
+
+  box-shadow:
+    7px 8px 18px rgba(62, 82, 113, 0.07),
+    -7px -7px 18px rgba(255, 255, 255, 0.82);
+}
+
+.source-badge strong {
+  display: block;
+
+  font-size: 11px;
+
+  color: #506584;
+}
+
+.source-badge span {
+  display: block;
+
+  margin-top: 3px;
+
+  font-size: 7px;
+
+  letter-spacing: 0.12em;
+
+  color: #98a6b9;
+}
+
+/* ============================================================
+   26. FOOTER
+   ============================================================ */
+
+.footer {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  margin-top: 52px;
+
+  padding:
+    22px 4px;
+
+  border-top:
+    1px solid rgba(95, 118, 153, 0.08);
+
+  color: #7e8fa9;
+
+  font-size: 8px;
+
+  font-weight: 600;
+
+  letter-spacing: 0.10em;
+}
+
+.footer-status {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+}
+
+.footer-status.online,
+.footer-status.offline {
+  color: #26ae7a;
+}
+
+.footer-status.partial {
+  color: #df9827;
+}
+
+/* ============================================================
+   27. TABLET
+   ============================================================ */
+
+@media (max-width: 1250px) {
+
+  .sidebar {
+    width: 270px;
+  }
+
+  .main-content {
+    width:
+      calc(100% - 305px);
+
+    margin-left: 305px;
+
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+
+  .hero-section {
+    grid-template-columns:
+      minmax(350px, 0.9fr)
+      minmax(430px, 1.1fr);
+  }
+
+  .hero-copy h1 {
+    font-size: 70px;
+  }
+
+  .sun {
+    width: 250px;
+    height: 250px;
+  }
+
+  .sun-glow {
+    width: 370px;
+    height: 370px;
+  }
+
+  .floating-card {
+    width: 195px;
+  }
+
+  .metric-card {
+    height: 195px;
+    min-height: 195px;
+    padding: 21px 24px;
+  }
+
+  .metric-label {
+    font-size: 16px;
+  }
+
+  .metric-value {
+    font-size: 49px;
+  }
+
+  .metric-status {
+    min-width: 78px;
+    height: 29px;
+  }
+
+  .metric-icon {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+/* ============================================================
+   28. SMALL LAPTOP
+   ============================================================ */
+
+@media (max-width: 1050px) {
+
+  .sidebar {
+    position: relative;
+
+    top: auto;
+    left: auto;
+    bottom: auto;
+
+    width: calc(100% - 20px);
+
+    margin:
+      10px;
+
+    padding:
+      22px;
+
+    border-radius:
+      26px;
+  }
+
+  .app-shell {
+    display: block;
+  }
+
+  .sidebar-nav {
+    flex-direction: row;
+
+    overflow-x: auto;
+  }
+
+  .sidebar-bottom {
+    display: none;
+  }
+
+  .main-content {
+    width: 100%;
+
+    margin-left: 0;
+
+    padding:
+      0 22px 40px;
+  }
+
+  .hero-section {
+    grid-template-columns: 1fr;
+
+    min-height: auto;
+  }
+
+  .hero-copy {
+    padding-left: 5px;
+  }
+
+  .hero-visual {
+    height: 500px;
+  }
+
+  .earth-grid {
+    grid-template-columns:
+      1fr;
+  }
+}
+
+/* ============================================================
+   29. TABLET
+   ============================================================ */
+
+@media (max-width: 850px) {
+
+  .metrics-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+  .metrics-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .metric-card {
+    height: 190px;
+    min-height: 190px;
+    padding: 20px 22px;
+  }
+
+  .metric-label {
+    font-size: 15px;
+  }
+
+  .metric-value {
+    font-size: 46px;
+  }
+
+  .index-card {
+    padding:
+      28px;
+  }
+
+  .earth-grid {
+    padding:
+      25px;
+  }
+}
+
+/* ============================================================
+   30. MOBILE
+   ============================================================ */
+
+@media (max-width: 650px) {
+
+  .sidebar {
+    margin:
+      7px;
+
+    padding:
+      18px;
+
+    border-radius:
+      22px;
+  }
+
+  .brand {
+    padding-bottom:
+      20px;
+  }
+
+  .brand-mark {
+    width: 46px;
+    height: 46px;
+  }
+
+  .brand-name {
+    font-size: 22px;
+  }
+
+  .sidebar-nav {
+    gap: 4px;
+  }
+
+  .nav-item {
+    min-height: 45px;
+
+    padding:
+      0 12px;
+
+    font-size: 11px;
+  }
+
+  .nav-icon {
+    display: none;
+  }
+
+  .main-content {
+    padding:
+      0 15px 35px;
+  }
+
+  .topbar {
+    height: 72px;
+  }
+
+  .topbar-left {
+    display: none;
+  }
+
+  .topbar-right {
+    width: 100%;
+
+    justify-content: flex-end;
+  }
+
+  .live-indicator {
+    padding:
+      10px 13px;
+  }
+
+  .refresh-button {
+    padding:
+      10px 12px;
+  }
+
+  /* Hero */
+
+  .hero-section {
+    padding-top:
+      35px;
+  }
+
+  .hero-copy h1 {
+    font-size:
+      48px;
+
+    line-height:
+      0.93;
+  }
+
+  .hero-copy p {
+    font-size:
+      12px;
+  }
+
+  .hero-meta {
+    flex-direction:
+      column;
+
+    gap:
+      13px;
+  }
+
+  .hero-visual {
+    height:
+      400px;
+  }
+
+  .sun {
+    width:
+      180px;
+
+    height:
+      180px;
+  }
+
+  .sun-glow {
+    width:
+      280px;
+
+    height:
+      280px;
+  }
+
+  .orbit-one {
+    width:
+      300px;
+
+    height:
+      180px;
+  }
+
+  .orbit-two {
+    width:
+      370px;
+
+    height:
+      220px;
+  }
+
+  .floating-card {
+    width:
+      150px;
+
+    padding:
+      14px 15px;
+  }
+
+  .wind-card {
+    top:
+      25px;
+
+    right:
+      0;
+  }
+
+  .storm-card {
+    right:
+      0;
+
+    bottom:
+      25px;
+  }
+
+  .floating-card-value {
+    font-size:
+      21px;
+  }
+
+  /* Index */
+
+  .index-card {
+    flex-direction:
+      column;
+
+    align-items:
+      flex-start;
+
+    padding:
+      25px;
+  }
+
+  .index-meter {
+    align-self:
+      center;
+  }
+
+  /* Sections */
+
+  .section-heading {
+    align-items:
+      flex-start;
+
+    flex-direction:
+      column;
+  }
+
+  .section-heading h2 {
+    font-size:
+      32px;
+  }
+
+  /* Metrics */
+
+  .metrics-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .metric-card {
+    height: 175px;
+    min-height: 175px;
+    padding: 19px 21px;
+    border-radius: 26px;
+  }
+
+  .metric-card::before {
+    width: 6px;
+    top: 15px;
+    bottom: 15px;
+  }
+
+  .metric-label {
+    font-size: 15px;
+  }
+
+  .metric-status {
+    min-width: 76px;
+    height: 28px;
+    padding: 0 9px;
+    font-size: 7px;
+  }
+
+  .metric-main {
+    margin-top: 20px;
+  }
+
+  .metric-value {
+    font-size: 45px;
+  }
+
+  .metric-unit {
+    font-size: 12px;
+  }
+
+  .metric-description {
+    margin-top: 9px;
+    font-size: 11px;
+  }
+
+  .metric-icon {
+    width: 46px;
+    height: 46px;
+    margin-top: 7px;
+  }
+
+  .metric-icon svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  /* Chart */
+
+  .native-chart {
+    min-height:
+      290px;
+
+    padding:
+      20px 10px 15px;
+  }
+
+  .chart-area {
+    height:
+      245px;
+  }
+
+  .chart-bar {
+    width:
+      6px;
+  }
+
+  .chart-date {
+    font-size:
+      7px;
+  }
+
+  /* Earth */
+
+  .earth-grid {
+    padding:
+      20px;
+  }
+
+  .earth-visual-card {
+    height:
+      250px;
+  }
+
+  .earth {
+    width:
+      145px;
+
+    height:
+      145px;
+  }
+
+  .earth-orbit {
+    width:
+      250px;
+  }
+
+  /* Events */
+
+  .event-item {
+    padding:
+      14px;
+  }
+
+  .event-date {
+    min-width:
+      70px;
+  }
+
+  /* Sources */
+
+  .sources-card {
+    flex-direction:
+      column;
+
+    align-items:
+      flex-start;
+  }
+
+  .source-badges {
+    width:
+      100%;
+  }
+
+  .source-badge {
+    flex:
+      1;
+  }
+
+  /* Footer */
+
+  .footer {
+    flex-direction:
+      column;
+
+    align-items:
+      flex-start;
+  }
+}
+
+/* ============================================================
+   31. VERY SMALL MOBILE
+   ============================================================ */
+
+@media (max-width: 420px) {
+
+  .hero-copy h1 {
+    font-size:
+      40px;
+  }
+
+  .hero-visual {
+    height:
+      350px;
+  }
+
+  .sun {
+    width:
+      145px;
+
+    height:
+      145px;
+  }
+
+  .sun-glow {
+    width:
+      230px;
+
+    height:
+      230px;
+  }
+
+  .floating-card {
+    width:
+      125px;
+
+    padding:
+      11px;
+  }
+
+  .floating-card-label {
+    font-size:
+      7px;
+  }
+
+  .floating-card-value {
+    font-size:
+      18px;
+  }
+
+  .floating-card-unit,
+  .floating-card-status {
+    font-size:
+      6px;
+  }
+
+  .index-meter {
+    width:
+      145px;
+
+    height:
+      145px;
+
+    flex-basis:
+      145px;
+  }
+
+  .index-number {
+    font-size:
+      37px;
+  }
+
+  .metric-card {
+    height: 165px;
+    min-height: 165px;
+    padding: 18px 19px;
+  }
+
+  .metric-value {
+    font-size: 42px;
+  }
+}
+/* ============================================================
+   MAIN ACTIVITY TWO-COLUMN LAYOUT
+============================================================ */
+
+.activity-layout {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1.15fr)
+    minmax(340px, 0.85fr);
+
+  gap: 28px;
+
+  width: 100%;
+
+  margin-top: 65px;
+}
+
+.activity-chart-panel,
+.events-panel {
+  min-width: 0;
+}
+
+.activity-layout .section-heading {
+  min-height: 78px;
+}
+
+@media (max-width: 1100px) {
+  .activity-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 650px) {
+  .activity-layout {
+    grid-template-columns: 1fr;
+
+    gap: 45px;
+  }
+}
+
+
+/* ============================================================
+   32. FINAL HELIO LAYOUT SAFETY OVERRIDES
+   ============================================================ */
+
+/* Desktop: never allow the main area to exceed the viewport. */
+@media (min-width: 1251px) {
+  .sidebar {
+    width: 320px;
+    min-width: 320px;
+  }
+
+  .main-content {
+    width: calc(100% - 365px);
+    max-width: calc(100% - 365px);
+    margin-left: 365px;
+    min-width: 0;
+    overflow-x: clip;
+  }
+
+  .hero-section {
+    grid-template-columns:
+      minmax(0, 0.95fr)
+      minmax(0, 1.05fr);
+  }
+
+  .hero-visual {
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .orbit-one {
+    max-width: 88%;
+  }
+
+  .orbit-two {
+    max-width: 96%;
+  }
+
+  .floating-card {
+    max-width: 235px;
+  }
+}
+
+/* Tablet: sidebar becomes compact without covering content. */
+@media (max-width: 1250px) {
+  .sidebar {
+    width: 270px;
+    min-width: 270px;
+  }
+
+  .main-content {
+    width: calc(100% - 305px);
+    max-width: calc(100% - 305px);
+    margin-left: 305px;
+    min-width: 0;
+    overflow-x: clip;
+  }
+
+  .hero-section {
+    grid-template-columns:
+      minmax(0, 0.9fr)
+      minmax(0, 1.1fr);
+  }
+
+  .hero-visual {
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .activity-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .earth-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Small laptop / tablet: sidebar becomes normal flow. */
+@media (max-width: 1050px) {
+  .sidebar {
+    width: calc(100% - 20px);
+    min-width: 0;
+    max-width: calc(100% - 20px);
+  }
+
+  .main-content {
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    padding-left: 22px;
+    padding-right: 22px;
+  }
+
+  .sidebar-nav {
+    padding-bottom: 0;
+    overflow-y: visible;
+  }
+
+  .hero-section {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-visual {
+    overflow: hidden;
+  }
+
+  .metrics-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .activity-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Mobile: no element is allowed to create page width. */
+@media (max-width: 650px) {
+  .main-content {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .sidebar {
+    width: calc(100% - 20px);
+    max-width: calc(100% - 20px);
+    margin: 10px;
+  }
+
+  .sidebar-nav {
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+  }
+
+  .sidebar-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav-item {
+    flex: 0 0 auto;
+  }
+
+  .topbar {
+    flex-wrap: wrap;
+    height: auto;
+    min-height: 72px;
+    padding: 14px 0;
+    gap: 12px;
+  }
+
+  .topbar-right {
+    flex-wrap: wrap;
+  }
+
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .activity-layout,
+  .earth-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sources-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .source-badges {
+    width: 100%;
+  }
+
+  .source-badge {
+    min-width: 0;
+    flex: 1 1 0;
+  }
+
+  .footer {
+    flex-wrap: wrap;
+  }
+}
+/* ============================================================
+   HELIO CUSTOM HERO IMAGE
+   ============================================================ */
+
+.hero-image-card {
+  width: 100%;
+  max-width: 520px;
+  aspect-ratio: 1 / 1;
+  margin: 0 auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 36px;
+
+  background: rgba(255, 255, 255, 0.62);
+
+  box-shadow:
+    18px 18px 40px rgba(31, 41, 55, 0.12),
+    -18px -18px 40px rgba(255, 255, 255, 0.9);
+
+  border: 1px solid rgba(255, 255, 255, 0.75);
+
+  overflow: hidden;
+  position: relative;
+}
+
+.helio-dashboard-image {
+  width: 88%;
+  height: 88%;
+
+  object-fit: contain;
+
+  display: block;
+
+  border-radius: 50%;
+
+  filter:
+    drop-shadow(0 20px 35px rgba(15, 23, 42, 0.18));
+
+  transition:
+    transform 0.5s ease,
+    filter 0.5s ease;
+}
+
+.hero-image-card:hover .helio-dashboard-image {
+  transform: scale(1.035);
+
+  filter:
+    drop-shadow(0 26px 45px rgba(15, 23, 42, 0.24));
+}
